@@ -1,0 +1,114 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Jua&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+
+    <title>불타는 보드</title>
+    <!--    font-family: 'Jua', sans-serif;-->
+    <script>
+        $(document).ready(function () {
+            getMessages();
+        })
+
+        function getMessages() {
+            $('#cards-box').empty();
+            $.ajax({
+                type: "GET",
+                url: "/api/contents",
+                data: {},
+                success: function (response) {
+                    for (let i = 0; i < response.length; i++) {
+                        let post = response[i];
+                        let id = post.id;
+                        let name = post.name;
+                        let title = post.title;
+                        let contents = post.contents;
+                        let modifiedAt = post.modifiedAt;
+                        let countReply = post.countReply;
+                        addHTML(id, name, title, contents, modifiedAt, countReply);
+                    }
+                }
+            });
+        }
+
+        function addHTML(id, name, title, contents, modifiedAt, countReply) {
+            let tempHtml = makeMessage(id, name, title, contents, modifiedAt, countReply);
+            $('#cards-box').append(tempHtml);
+        }
+
+        function makeMessage(id, name, title, contents, modifiedAt, countReply) {
+            return `<a href="detail.html?id=${id}">
+                        <div class="card">
+                            <div class="metadata">
+                               <div id="${id}-name" class="name">
+                                   ${name}
+                               </div>
+                               <div class="date">
+                                   ${modifiedAt}
+                               </div>
+                            </div>
+                            <h2 class='title' id="${id}-title">"${title}"</h2>
+                            <div class="contents" id="${id}-contents" >
+                               ${contents}
+                            </div>
+                            <div class="countReply">
+                            댓글 : ${countReply}
+                            </div>
+                         </a>
+
+                        </div>`;
+        }
+
+    </script>
+
+</head>
+
+<body data-new-gr-c-s-check-loaded="14.1054.0" data-gr-ext-installed="">
+<div class="background-header">
+    <div id="header_btn">
+        <a id="login-text" href="/user/login">
+            LogIn
+        </a>
+        <a id="signup-text" href="/user/signup">
+            SignIn
+        </a>
+    </div>
+</div>
+<div class="background-body"></div>
+<!--<div class="wrap">-->
+<!--    <div class="header">-->
+
+
+<!--        <h2>뜨겁게😢🤯</h2>-->
+<!--    </div>-->
+<!--    <div class="to-write"></div>-->
+<!--    <div id="cards-box" class="area-read"><a href="detail.html?id=615"></a>-->
+<!--        <div class="card"><a href="detail.html?id=615">-->
+<!--            <div class="metadata">-->
+<!--                <div id="615-name" class="name">-->
+<!--                    응수'-'-->
+<!--                </div>-->
+<!--                <div class="date">-->
+<!--                    2022-03-29 03:28:55-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <h2 class="title" id="615-title">"댓글 몇개인지 표시해주는 기능을,,"</h2>-->
+<!--            <div class="contents" id="615-contents">-->
+<!--                다 하시면 도전해보세요 댓글 개수 카운팅하는 기능을!-->
+<!--            </div>-->
+<!--            <div class="countReply">-->
+<!--                댓글 : 8-->
+<!--            </div>-->
+<!--            </a>-->
+
+<!--         </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+</body>
+</html>
